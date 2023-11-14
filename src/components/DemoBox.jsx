@@ -1,22 +1,32 @@
-import { Grid, Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 
-const getRandomColor = () => {
-  return "#" + Math.floor(Math.random() * 16777215).toString(16);
-};
-
-const DemoBox = () => {
-  const randomColor = getRandomColor();
+const DemoBox = ({ randomColor, char, isSelected, onClick }) => {
   return (
     <Box
+      display="flex"
+      justifyContent="center"
       sx={{
-        border: "1px solid black", // Fix the syntax for border style
-        width: "100px",
-        height: "100px",
+        border: "1px solid black",
+        width: isSelected ? "200px" : "100px",
+        height: isSelected ? "200px" : "100px",
         backgroundColor: randomColor,
+        cursor: "pointer",
       }}
+      onClick={onClick}
     >
-      test
+      <Box display="flex" alignItems="center">
+        <Typography
+          fontSize="20px"
+          color={
+            randomColor === "#000000" || randomColor === "#112233"
+              ? "white"
+              : "black"
+          }
+        >
+          {char}
+        </Typography>
+      </Box>
     </Box>
   );
 };
