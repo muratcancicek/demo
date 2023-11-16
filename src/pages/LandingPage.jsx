@@ -1,42 +1,50 @@
-import { Button, Grid, Box } from "@mui/material";
+import { Button, Grid, Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ContentBox from "../components/ContentBox";
-import { abc, generateContents } from "../enums/BaseContents";
+import { generateContents } from "../enums/BaseContents";
 import { initializeUserVectors, initializeContentVectors, nmfForContentRanking } from "../ranking"
 
 const LandingPage = () => {
-  
-function getDefaultContents(numContents) {
+
+  function getDefaultContents(numContents) {
     let contents = generateContents(numContents);
     for (let i = 0; i < contents.length; i++) {
       contents[i] = { ...contents[i], score: 1.0, interaction: 1 };
     }
     return contents;
-}
+  }
 
-function gettInteractionMatrix(contents) {
-  return [contents.sort((a, b) => a.char > b.char ? 1 : -1).map((c) => c.interaction)];
-}
+  function gettInteractionMatrix(contents) {
+    let sortedContents = contents.sort((a, b) => a.id > b.id ? 1 : -1);
+    return [sortedContents.map((c) => c.interaction)];
+  }
 
   const numUsers = 1;
-  const numContents = 22;
-  const [contents, setContents] = useState(getDefaultContents(numContents));
+  const [numContents, setNumContents] = useState(10);
+  const [contents, setContents] = useState([]);
+  const [abc, setAbc] = useState([]);
   const numUserFeatures = 3;
   const numContentFeatures = 3;
   const [selectedBox, setSelectedBox] = useState(null);
   const [userVectors, setUserVectors] = useState(null);
   const [contentVectors, setcontentVectors] = useState(null);
 
+  const handleGenerateClick = () => {
+    let contents = getDefaultContents(numContents);
+    setContents(contents);
+    setAbc(contents.map((c) => c.char));
+  };
+
   function updateContentByChar(char, interaction, score) {
-      // finds the content by the char value and updates interaction and score
-      setContents(prevContents => {
-        return prevContents.map(item => {
-            if (item.char === char) {
-                return {...item, interaction: interaction, score: score};
-            } else {
-                return item;
-            }
-        });
+    // finds the content by the char value and updates interaction and score
+    setContents(prevContents => {
+      return prevContents.map(item => {
+        if (item.char === char) {
+          return { ...item, interaction: interaction, score: score };
+        } else {
+          return item;
+        }
+      });
     });
   }
 
@@ -44,7 +52,7 @@ function gettInteractionMatrix(contents) {
     let interactionMatrix = gettInteractionMatrix(contents);
     const interestScores = nmfForContentRanking(interactionMatrix, userVectors, contentVectors, 3);
     for (let i = 0; i < numContents; i++) {
-        updateContentByChar(abc[i], interactionMatrix[0][i], interestScores[0][i])
+      updateContentByChar(abc[i], interactionMatrix[0][i], interestScores[0][i])
     }
 
   }
@@ -70,6 +78,18 @@ function gettInteractionMatrix(contents) {
   return (
     <>
       <Grid container sx={{ padding: 10 }}>
+        <Grid item xs={12} display="flex" justifyContent="center">
+          <Box><Typography style={{ fontSize: 25 }}>Stake for Ranking</Typography></Box>
+        </Grid>
+        <Grid item xs={12} display="flex" justifyContent="center">
+          <Box>
+            Number of Contents:
+            <input type="number" value={numContents} onChange={(e) => setNumContents(e.target.value)} style={{ marginLeft: "5px", marginRight: '5px' }} />
+            <Button variant="contained" onClick={handleGenerateClick}>
+              Generate
+            </Button>
+          </Box>
+        </Grid>
         <Grid item xs={12} mt={5} display="flex" justifyContent="center">
           <Box>
             <Button variant="contained" onClick={handleOnclick}>
