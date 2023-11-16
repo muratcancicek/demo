@@ -1,13 +1,13 @@
 import { Button, Grid, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ContentBox from "../components/ContentBox";
-import { BaseContents } from "../enums/BaseContents";
+import { abc, generateContents } from "../enums/BaseContents";
 import { initializeUserVectors, initializeContentVectors, nmfForContentRanking } from "../ranking"
 
 const LandingPage = () => {
   
-function getDefaultContents(baseContents) {
-    let contents = [...baseContents];
+function getDefaultContents(numContents) {
+    let contents = generateContents(numContents);
     for (let i = 0; i < contents.length; i++) {
       contents[i] = { ...contents[i], score: 1.0, interaction: 1 };
     }
@@ -18,14 +18,9 @@ function gettInteractionMatrix(contents) {
   return [contents.sort((a, b) => a.char > b.char ? 1 : -1).map((c) => c.interaction)];
 }
 
-function getScores(contents) {
-  return [contents.map((c) => c.score)];
-}
-
-  const [contents, setContents] = useState(getDefaultContents(Object.values(BaseContents)));
-  const abc = ["a", "b", "c", "d", "e", "f"];
   const numUsers = 1;
-  const numContents = BaseContents.length;
+  const numContents = 22;
+  const [contents, setContents] = useState(getDefaultContents(numContents));
   const numUserFeatures = 3;
   const numContentFeatures = 3;
   const [selectedBox, setSelectedBox] = useState(null);
@@ -85,7 +80,6 @@ function getScores(contents) {
         {contents.sort((a, b) => a.score > b.score ? -1 : 1).map((content, index) => (
           <Grid key={index} item xs={12} sm={6} md={4} lg={3} mt={5}>
             <ContentBox
-              randomColor={content.color}
               char={content.char}
               vec={content.vec}
               score={content.score}

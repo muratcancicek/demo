@@ -1,16 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-const ContentBox = ({ randomColor, char, vec, isFocused, isSelected, score, interaction, onClick }) => {
-  let border = "1px solid black";
-  let width = "100px";
-  let height = "100px";
-  // if (isSelected || isFocused) {
-  //   let color = isSelected ? "green" : "black";
-  //   border = "15px solid {color}";
-  //   width = "70px";
-  //   height = "70px";
-  // }
+const ContentBox = ({char, vec, score, interaction, onClick }) => {
+  const color = `rgb(${vec[0]}, ${vec[1]}, ${vec[2]})`;
   return (
     <Box
       display="flex"
@@ -19,7 +11,7 @@ const ContentBox = ({ randomColor, char, vec, isFocused, isSelected, score, inte
         border: "1px solid black",
         width: "150px",
         height: "150px",
-        backgroundColor: randomColor,
+        backgroundColor: color,
         cursor: "pointer",
       }}
       onClick={onClick}
