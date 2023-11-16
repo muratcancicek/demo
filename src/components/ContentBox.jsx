@@ -20,8 +20,9 @@ const ContentBox = ({char, vec, score, interaction, onClick }) => {
         <Typography
           fontSize="20px"
           color="white"
+          align="center"
         >
-          {char}<br/>Inter: {interaction}<br/>Score: {score && score.toFixed(2)}
+          {char}<br/>Interaction: {interaction}<br/>Score: {score && score.toFixed(4)}
         </Typography>
       </Box>
     </Box>

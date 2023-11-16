@@ -1,4 +1,12 @@
-export const abc = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+function getChar(i) {
+  let char = '';
+  while (i >= 0) {
+      char = String.fromCharCode(i % 26 + 65) + char;
+      i = Math.floor(i / 26) - 1;
+  }
+  return char;
+}
+
 export function generateContents(numContents) {
   let colorStep = 510 / numContents;
   let red = 255;
@@ -6,7 +14,8 @@ export function generateContents(numContents) {
   let blue = 0;
   let contents = [];
   for (let i = 0; i < numContents; i++) {
-    let c = {vec: [red, green, blue], char: abc[i]};
+    let char = getChar(i);
+    let c = {vec: [red, green, blue], char: char, id: i};
     contents = [...contents, c];
     if (red > 0) {
       red = red - colorStep;
