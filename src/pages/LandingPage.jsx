@@ -79,7 +79,7 @@ const LandingPage = () => {
     <>
       <Grid container sx={{ padding: 10 }}>
         <Grid item xs={12} display="flex" justifyContent="center">
-          <Box><Typography style={{ fontSize: 25 }}>Stake for Ranking</Typography></Box>
+          <Box><Typography style={{ fontSize: 25 }}>Stake for Ranking!</Typography></Box>
         </Grid>
         <Grid item xs={12} display="flex" justifyContent="center">
           <Box>
