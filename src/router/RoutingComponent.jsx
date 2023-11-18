@@ -8,6 +8,7 @@ const RoutingComponent= () => {
     <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/stake_for_ranking" element={<LandingPage />} />
         </Routes>
     </Router>
   );
